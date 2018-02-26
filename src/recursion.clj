@@ -308,16 +308,18 @@
 (defn combine [el lst]
            (map (fn [x] (concat (list el) x)) lst))
 
-(defn permutations [a-set]
+;; Test cases are probably list or vector so change them to list
+(defn permutations [ast]
+  (let [a-set (into #{} ast)]
     (cond
       (empty? a-set) '(())
       (singleton? a-set) (list (into '() a-set))
       :else
-        (mapcat (fn [x] (combine x (permutations (disj a-set x)))) a-set)))
+        (mapcat (fn [x] (combine x (permutations (disj a-set x)))) a-set))))
 
 (permutations #{})
 
-(permutations #{1 5 2})
+(permutations #{1 5 2 4})
 
 (defn powerset [a-set]
   )
