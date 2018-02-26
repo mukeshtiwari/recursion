@@ -300,10 +300,25 @@
 (merge-sort [1 2 3])            ;=> (1 2 3)
 (merge-sort [5 3 4 17 2 100 1]) ;=> (1 2 3 4 5 17 100)
 
+
+(defn is-monotone [s]
+  (cond
+    (or (empty? s) (singleton? s)) true
+    :else (or (apply < s) (apply > s))))
+
+(first (filter is-monotone (reverse (inits [0 1 2 1 0]))))
+
 (defn split-into-monotonics [a-seq]
-  [:-])
+  (cond
+    (or (empty? a-seq) (singleton? a-seq)) a-seq
+    :else
+      (let [largest (first (filter is-monotone (reverse (inits a-seq))))
+            remain (my-drop (count largest) a-seq)]
+        (cons largest (split-into-monotonics remain)))))
 
 
+(split-into-monotonics [0 1 2 1 0])   ;=> ((0 1 2) (1 0))
+(split-into-monotonics [0 5 4 7 1 3]) ;=> ((0 5) (4 7) (1 3))
 
 (defn combine [el lst]
            (map (fn [x] (concat (list el) x)) lst))
@@ -321,11 +336,11 @@
 
 (permutations #{1 5 2 4})
 
-(defn powerset [s]
-  (if (empty? s) (list '())
-      (let [ps (powerset (rest s))]
+(defn powerset [a-set]
+  (if (empty? a-set) (list ())
+      (let [ps (powerset (rest a-set))]
         (concat ps
-                (map (fn [p] (cons (first s) p)) ps)))))
+                (map (fn [p] (cons (first a-set) p)) ps)))))
 
 
 (powerset #{})      ;=> #{#{}}
