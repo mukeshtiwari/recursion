@@ -294,7 +294,7 @@
 
 
 
-
+(inits [0 5 4 7 1 3])
 
 (merge-sort [])                 ;=> ()
 (merge-sort [1 2 3])            ;=> (1 2 3)
@@ -303,9 +303,22 @@
 (defn split-into-monotonics [a-seq]
   [:-])
 
+
+
+(defn combine [el lst]
+           (map (fn [x] (concat (list el) x)) lst))
+
 (defn permutations [a-set]
-  [:-])
+    (cond
+      (empty? a-set) '(())
+      (singleton? a-set) (list (into '() a-set))
+      :else
+        (mapcat (fn [x] (combine x (permutations (disj a-set x)))) a-set)))
+
+(permutations #{})
+
+(permutations #{1 5 2})
 
 (defn powerset [a-set]
-  [:-])
+  )
 
