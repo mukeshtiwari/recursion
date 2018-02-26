@@ -321,6 +321,15 @@
 
 (permutations #{1 5 2 4})
 
-(defn powerset [a-set]
-  )
+(defn powerset [s]
+  (if (empty? s) (list '())
+      (let [ps (powerset (rest s))]
+        (concat ps
+                (map (fn [p] (cons (first s) p)) ps)))))
+
+
+(powerset #{})      ;=> #{#{}}
+(powerset #{1 2 4}) ;=> #{#{} #{4} #{2} #{2 4} #{1} #{1 4} #{1 2} #{1 2 4}}
+
+
 
